@@ -1,5 +1,7 @@
 const inquirer = require('inquirer');
-const axios = require('axios');
+const fetch = require('node-fetch');
+const chalk = require('chalk');
+
 
 const getInput = (message) => new Promise((resolve, reject) => {
     inquirer
@@ -14,29 +16,60 @@ const getInput = (message) => new Promise((resolve, reject) => {
         .catch(err => reject(err));
 });
 
-// Contoh penggunaan
 const main = async () => {
-    console.log("\r\n\u2591\u2588\u2588\u2588\u2588\u2588\u2557\u2591\u2588\u2588\u2557\u2591\u2591\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2591\u2588\u2588\u2588\u2588\u2588\u2557\u2591\u2588\u2588\u2557\u2591\u2591\u2588\u2588\u2557\u2003\u2003\u2591\u2588\u2588\u2588\u2588\u2588\u2557\u2591\u2588\u2588\u2557\u2591\u2591\u2591\u2588\u2588\u2557\u2591\u2588\u2588\u2588\u2588\u2588\u2557\u2591\u2591\u2588\u2588\u2588\u2588\u2588\u2557\u2591\u2591\u2588\u2588\u2588\u2588\u2588\u2557\u2591\r\n\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551\u2591\u2591\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551\u2591\u2588\u2588\u2554\u255D\u2003\u2003\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551\u2591\u2591\u2591\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\r\n\u2588\u2588\u2551\u2591\u2591\u255A\u2550\u255D\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2557\u2591\u2591\u2588\u2588\u2551\u2591\u2591\u255A\u2550\u255D\u2588\u2588\u2588\u2588\u2588\u2550\u255D\u2591\u2003\u2003\u2588\u2588\u2551\u2591\u2591\u255A\u2550\u255D\u2588\u2588\u2551\u2591\u2591\u2591\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551\u2591\u2591\u255A\u2550\u255D\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\r\n\u2588\u2588\u2551\u2591\u2591\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255D\u2591\u2591\u2588\u2588\u2551\u2591\u2591\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2588\u2588\u2557\u2591\u2003\u2003\u2588\u2588\u2551\u2591\u2591\u2588\u2588\u2557\u2588\u2588\u2551\u2591\u2591\u2591\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2551\u2591\u2591\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\r\n\u255A\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2551\u2591\u2591\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u255A\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2551\u2591\u255A\u2588\u2588\u2557\u2003\u2003\u255A\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u255A\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2551\u2591\u2591\u2588\u2588\u2551\u255A\u2588\u2588\u2588\u2588\u2588\u2554\u255D\u2588\u2588\u2551\u2591\u2591\u2588\u2588\u2551\r\n\u2591\u255A\u2550\u2550\u2550\u2550\u255D\u2591\u255A\u2550\u255D\u2591\u2591\u255A\u2550\u255D\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D\u2591\u255A\u2550\u2550\u2550\u2550\u255D\u2591\u255A\u2550\u255D\u2591\u2591\u255A\u2550\u255D\u2003\u2003\u2591\u255A\u2550\u2550\u2550\u2550\u255D\u2591\u2591\u255A\u2550\u2550\u2550\u2550\u2550\u255D\u2591\u255A\u2550\u255D\u2591\u2591\u255A\u2550\u255D\u2591\u255A\u2550\u2550\u2550\u2550\u255D\u2591\u255A\u2550\u255D\u2591\u2591\u255A\u2550\u255D");
+    console.log(`\r\n\u2580\u2588\u2580\u2003\u2588\u2003\u2588\u2584\u2580\u2003\u2580\u2588\u2580\u2003\u2588\u2580\u2588\u2003\u2588\u2584\u2580\u2003 \u2003\u2588\u2580\u2584\u2003\u2588\u2580\u2588\u2003\u2588\u2591\u2588\u2591\u2588\u2003\u2588\u2584\u2591\u2588\u2003\u2588\u2591\u2591\u2003\u2588\u2580\u2588\u2003\u2584\u2580\u2588\u2003\u2588\u2580\u2584\u2003\u2588\u2580\u2580\u2003\u2588\u2580\u2588\u2003 \u2003\u2588\u2584\u2591\u2588\u2003\u2588\u2580\u2588\u2003 \u2003\u2588\u2591\u2588\u2591\u2588\u2003\u2588\u2580\u2584\u2580\u2588\r\n\u2591\u2588\u2591\u2003\u2588\u2003\u2588\u2591\u2588\u2003\u2591\u2588\u2591\u2003\u2588\u2584\u2588\u2003\u2588\u2591\u2588\u2003 \u2003\u2588\u2584\u2580\u2003\u2588\u2584\u2588\u2003\u2580\u2584\u2580\u2584\u2580\u2003\u2588\u2591\u2580\u2588\u2003\u2588\u2584\u2584\u2003\u2588\u2584\u2588\u2003\u2588\u2580\u2588\u2003\u2588\u2584\u2580\u2003\u2588\u2588\u2584\u2003\u2588\u2580\u2584\u2003 \u2003\u2588\u2591\u2580\u2588\u2003\u2588\u2584\u2588\u2003 \u2003\u2580\u2584\u2580\u2584\u2580\u2003\u2588\u2591\u2580\u2591\u2588`);
     try {
-        const lokasi = await getInput("Masukkan Lokasi yang ingin di cari:");
+        const lokasi = await getInput("Masukkan Url Tiktok:");
         const lokasidata = lokasi.input;
         // console.log(chalk.blue('Hello world!'));
-        console.log(`lokasi yang dimasukkan: ${lokasidata}`);
-        return lokasidata;
+        const videooo = lokasidata.includes("/video/")
+        const videoId = lokasidata.split("/video/")[1];
+        if (videoId < 19) {
+            console.log(`Link Video Salah`);
+        } else {
+            return videoId;
+        }
     } catch (error) {
-        console.error(error);
+        console.error(`error`, error);
     }
 };
 
-const Api = async (lokasidata) => {
+const DataApiTiktok = async (videoId) => {
     try {
-        const api = await axios.get(`http://api.weatherapi.com/v1/current.json?key=f0f95793280443b1bac21053232801&q=${lokasidata}&aqi=yes`);
-        const IsiChat = (`˜”*°•.˜”*°• Update Cuaca Ciracas •°*”˜.•°*”˜\nLokasi : ${api.data.location.name}\nNegara : ${api.data.location.country}\nSuhu : ${api.data.current.feelslike_c}°C\nTerakhir Update : ${api.data.current.last_updated}\n\n\n`);
-        console.log(IsiChat);
-        return IsiChat;
+        if (videoId) {
+            const headers = {
+                'User-Agent': 'TikTok 26.2.0 rv:262018 (iPhone; iOS 14.4.2; en_US) Cronet'
+            };
+
+            const response = await fetch(`https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${videoId}`, {
+                headers: headers,
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+
+            console.log(chalk.green(`[*] Link Videonya :`, data.aweme_list[0].video.play_addr.url_list[0]));
+            console.log(chalk.redBright(`[*] Credit By Ridwan`));
+
+
+        } else {
+            console.log('videoId is required');
+        }
     } catch (error) {
         console.error(error);
     }
 }
 
-main().then(lokasidata => Api(lokasidata));
+
+const gabungan = async () => {
+    const videoId = await main();
+    if (videoId) {
+        await DataApiTiktok(videoId);
+    } else {
+    }
+}
+gabungan();

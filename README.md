@@ -1,5 +1,11 @@
-## Bahan
+# TIKTOK DOWNLAODER NO WM
 ```bash
-https://www.freeformatter.com/javascript-escape.html#before-output (Mengubah ASCII ke Js)
+Credit By Ridwan
+```
 
+## INSTAL
+
+```bash
+[1] npm install
+[2] npm start
 ```
