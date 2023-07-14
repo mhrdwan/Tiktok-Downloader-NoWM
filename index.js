@@ -53,7 +53,8 @@ const DataApiTiktok = async (videoId) => {
 
 
             console.log(chalk.green(`[*] Link Videonya :`, data.aweme_list[0].video.play_addr.url_list[0]));
-            console.log(chalk.redBright(`[*] Credit By Ridwan`));
+            console.log(chalk.greenBright(`[+] Success`));
+            console.log(chalk.redBright(`[+] Credit By Ridwan`));
 
 
         } else {
